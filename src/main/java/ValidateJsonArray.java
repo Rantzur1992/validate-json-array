@@ -43,14 +43,7 @@ public class ValidateJsonArray implements GenericAction {
                 keyValue.put(m.group(1), m.group(2));
             }
         }
-        JsonArray rootObj;
-        JsonParser parser = new JsonParser();
-        try{
-            rootObj = parser.parse(jsonArray).getAsJsonArray();
-        }
-        catch (JsonSyntaxException e){
-            throw new FailureException("Error: " + e.toString());
-        }
+        JsonArray rootObj = Utils.getJsonElements(jsonArray);
         if(indexOfJsonElement.isEmpty()) {
             for(JsonElement jsonElement : rootObj) {
                 iterateAction(keyValue, jsonElement);
@@ -65,6 +58,7 @@ public class ValidateJsonArray implements GenericAction {
         helper.getReporter().result("All values and their corresponding keys are in place.");
         return ExecutionResult.PASSED;
     }
+
 
     private void iterateAction(Map<String, String> keyValue, JsonElement jsonElement) throws FailureException {
         for (String key : keyValue.keySet()) {
