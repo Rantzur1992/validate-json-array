@@ -1,12 +1,14 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.testproject.java.annotations.v2.Action;
 import io.testproject.java.annotations.v2.Parameter;
 import io.testproject.java.sdk.v2.addons.GenericAction;
 import io.testproject.java.sdk.v2.addons.helpers.AddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 
+@Action(name = "Are given key-value pair unique in a JSON Array", description = "Are key:{{key}} and value: {{value}} unique?")
 public class IsValueUnique implements GenericAction {
     @Parameter(description = "The JSON Array to check.")
     private String jsonArray = "";
@@ -46,7 +48,8 @@ public class IsValueUnique implements GenericAction {
                 throw new FailureException("Could not find " + key);
             }
             if(respondingValue.equals(value)) {
-                counter++;
+                if(counter++ > 1)
+                    break;;
             }
         }
         if (counter > 1) {
